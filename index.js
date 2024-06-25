@@ -124,6 +124,8 @@ app.message(async ({ message, client }) => {
       var resp = { transMsg: "Error during translation" };
     }
 
+    var postmsg = "";
+
     // post message:
     postmsg = postmsg.concat(`${resp.transMsg}`);
 
