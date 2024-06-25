@@ -100,7 +100,7 @@ app.message(async ({ message, client }) => {
       var fromLanguage = "language detection error";
     }
 
-    var toLang = "no meaning here";
+    var toLang = "EN";
     // translate message:
     // if (fromLanguage === "JA") {
     //   var toLang = "EN";
