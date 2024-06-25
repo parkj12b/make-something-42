@@ -43,7 +43,7 @@ function handleCommand(command, channel, client) {
 
 app.message(async ({ message, client, say }) => {
 
-  if (message.text.startsWith('!T42cmd ')) {
+  if (message.text != undefined && message.text.startsWith('!T42cmd ')) {
     const command = message.text.split(' ')[1];
     const response = handleCommand(command, message.channel, client);
     await say(response);
@@ -138,7 +138,8 @@ app.message(async ({ message, client, say }) => {
     // }
 
     var splitLocale = fromUser.user.locale.split("-");
-    var toLang = fromUser.user.locale[0].toUpperCase();
+    var toLang = splitLocale[0].toUpperCase();
+    console.log("here\n" + toLang);
     var fromLanguage = "no meaning for now"
     // translate message:
     // if (fromLanguage === "JA") {
