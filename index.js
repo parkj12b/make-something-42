@@ -275,7 +275,7 @@ app.shortcut('1', async ({ shortcut, ack, client }) => {
     }
     var fromLanguage = "AUTO";
     var splitLocale = fromUser.user.locale.split("-");
-    var toLang = fromUser.user.locale[0].toUpperCase();
+    var toLang = splitLocale[0].toUpperCase();
     // Translate the original message to the desired language
     var resp = await translate(
       (fromLang = fromLanguage),
