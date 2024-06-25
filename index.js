@@ -214,13 +214,16 @@ app.shortcut('1', async ({ shortcut, ack, client }) => {
 
     // Original message from the shortcut payload
     const originalMessage = shortcut.message.text;
-
+    
+    var splitLocale = fromUser.user.locale.split("-");
+    var toLang = fromUser.user.locale[0].toUpperCase();
     // Translate the original message to the desired language
     var resp = await translate(
       (fromLang = fromLanguage),
       (toLang = toLang),
       (msg = originalMessage)
     );
+
 
     // Send the translated message back to the user in Slack
     await client.chat.postMessage({
