@@ -263,7 +263,7 @@ app.shortcut('1', async ({ shortcut, ack, client }) => {
       // Call the users.info method using the WebClient
       // console.log("get sender information:");
       var fromUser = await client.users.info({
-        user: message.user,
+        user: shortcut.user,
         include_locale: true
       });
       // console.log(`is this user info? ${fromUser.user.locale}`);
