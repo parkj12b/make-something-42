@@ -88,17 +88,17 @@ app.message(async ({ message, client }) => {
     }
 
     // Detect language:
-    try {
-      // console.log("translate message");
-      var fromLanguage = detectLang(
-        (text = message.text),
-        (japPropThresh = 0.1),
-        (verbose = true)
-      );
-    } catch (error) {
-      console.error(error);
-      var fromLanguage = "language detection error";
-    }
+    // try {
+    //   // console.log("translate message");
+    //   var fromLanguage = detectLang(
+    //     (text = message.text),
+    //     (japPropThresh = 0.1),
+    //     (verbose = true)
+    //   );
+    // } catch (error) {
+    //   console.error(error);
+    //   var fromLanguage = "language detection error";
+    // }
 
     var toLang = "EN";
     // translate message:
@@ -113,7 +113,7 @@ app.message(async ({ message, client }) => {
     try {
       // console.log("translate message");
       var resp = await translate(
-        (fromLang = fromLanguage),
+        //(fromLang = fromLanguage),
         (toLang = toLang),
         (msg = message.text)
       );
