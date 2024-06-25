@@ -215,6 +215,20 @@ app.shortcut('1', async ({ shortcut, ack, client }) => {
     // Original message from the shortcut payload
     const originalMessage = shortcut.message.text;
     
+    try {
+      // Call the users.info method using the WebClient
+      // console.log("get sender information:");
+      var fromUser = await client.users.info({
+        user: message.user,
+        include_locale: true
+      });
+      // console.log(`is this user info? ${fromUser.user.locale}`);
+      var fromName = fromUser.user.display_name;
+    } catch (error) {
+      console.error(error);
+      var fromName = "Unidentified User";
+    }
+
     var splitLocale = fromUser.user.locale.split("-");
     var toLang = fromUser.user.locale[0].toUpperCase();
     // Translate the original message to the desired language
