@@ -117,7 +117,7 @@ app.message(async ({ message, client, say }) => {
         user: message.user,
         include_locale: true
       });
-      console.log(`is this user info? ${JSON.stringify(fromUser)}`);
+      console.log(`is this user info? ${fromUser.user.locale}`);
       var fromName = fromUser.user.display_name;
     } catch (error) {
       console.error(error);
