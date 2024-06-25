@@ -219,7 +219,9 @@ app.message(async ({ message, client, say }) => {
     if (message.attachments) {
       postmsg = postmsg.concat(`> --- attachement not translated sorry ---`);
     }
-
+	
+    if (postmsg == "")
+	  postmsg = "no translation available";
     if (channelState === 'translate_all') {
       // Post to the auto-translate channe
       await client.chat.postMessage({
@@ -272,7 +274,7 @@ app.shortcut('1', async ({ shortcut, ack, client }) => {
       console.error(error);
       var fromName = "Unidentified User";
     }
-
+    var fromLanguage = "AUTO";
     var splitLocale = fromUser.user.locale.split("-");
     var toLang = fromUser.user.locale[0].toUpperCase();
     // Translate the original message to the desired language
@@ -283,13 +285,16 @@ app.shortcut('1', async ({ shortcut, ack, client }) => {
     );
 
 
+    var postmsg = "";
+
+    postmsg = postmsg.concat(`${resp.transMsg}`);
     // Send the translated message back to the user in Slack
     await client.chat.postMessage({
       text: postmsg,
-      channel: message.channel,
-      thread_ts: message.ts,
-      username: `AutoTranslate`,
-      icon_url: fromUser.user.profile.image_48,
+      channel: channelId,
+      thread_ts: shortcut.message.ts,
+      username: `AutoTranslate`
+     // icon_url: fromUser.user.profile.image_48,
     });
   } catch (error) {
     console.error('Error handling shortcut:', error);
