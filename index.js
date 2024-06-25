@@ -199,3 +199,38 @@ app.message(async ({ message, client, say }) => {
     console.log("Not tracked channel, or skipped");
   }
 });
+
+
+
+app.shortcut('1', async ({ shortcut, ack, client }) => {
+  try {
+    await ack(); // Acknowledge the shortcut request
+
+    // Extract information from the shortcut payload
+    const userId = shortcut.user.id;
+    const channelId = shortcut.channel.id;
+    const callbackId = shortcut.callback_id;
+    const triggerId = shortcut.trigger_id;
+
+    // Original message from the shortcut payload
+    const originalMessage = shortcut.message.text;
+
+    // Translate the original message to the desired language
+    var resp = await translate(
+      (fromLang = fromLanguage),
+      (toLang = toLang),
+      (msg = originalMessage)
+    );
+
+    // Send the translated message back to the user in Slack
+    await client.chat.postMessage({
+      text: postmsg,
+      channel: message.channel,
+      thread_ts: message.ts,
+      username: `AutoTranslate`,
+      icon_url: fromUser.user.profile.image_48,
+    });
+  } catch (error) {
+    console.error('Error handling shortcut:', error);
+  }
+});
