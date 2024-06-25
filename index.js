@@ -80,7 +80,7 @@ app.message(async ({ message, client }) => {
       var fromUser = await client.users.info({
         user: message.user,
       });
-      console.log(`is this user info? ${JSON.stringify(fromUser)}`);
+      console.log(`is this user info? ${JSON.stringify(client.users)}`);
       var fromName = fromUser.user.display_name;
     } catch (error) {
       console.error(error);
