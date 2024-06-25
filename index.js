@@ -291,7 +291,7 @@ app.shortcut('1', async ({ shortcut, ack, client }) => {
     // Send the translated message back to the user in Slack
     await client.chat.postMessage({
       text: postmsg,
-      channel: channelId,
+      channel: userId,
       thread_ts: shortcut.message.ts,
       username: `AutoTranslate`
      // icon_url: fromUser.user.profile.image_48,
