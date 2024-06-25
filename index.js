@@ -79,6 +79,7 @@ app.message(async ({ message, client }) => {
       // console.log("get sender information:");
       var fromUser = await client.users.info({
         user: message.user,
+        include_locale: true
       });
       console.log(`is this user info? ${JSON.stringify(client.users)}`);
       var fromName = fromUser.user.display_name;
