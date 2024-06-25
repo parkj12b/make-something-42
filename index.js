@@ -101,6 +101,7 @@ app.message(async ({ message, client }) => {
     // }
 
     var toLang = "EN";
+    var fromLanguage = "no meaning for now"
     // translate message:
     // if (fromLanguage === "JA") {
     //   var toLang = "EN";
@@ -113,7 +114,7 @@ app.message(async ({ message, client }) => {
     try {
       // console.log("translate message");
       var resp = await translate(
-        //(fromLang = fromLanguage),
+        (fromLang = fromLanguage),
         (toLang = toLang),
         (msg = message.text)
       );
