@@ -117,7 +117,7 @@ app.message(async ({ message, client, say }) => {
         user: message.user,
         include_locale: true
       });
-      console.log(`is this user info? ${fromUser.user.locale}`);
+      // console.log(`is this user info? ${fromUser.user.locale}`);
       var fromName = fromUser.user.display_name;
     } catch (error) {
       console.error(error);
@@ -137,7 +137,7 @@ app.message(async ({ message, client, say }) => {
     //   var fromLanguage = "language detection error";
     // }
 
-    var toLang = "EN";
+    var toLang = fromUser.user.locale;
     var fromLanguage = "no meaning for now"
     // translate message:
     // if (fromLanguage === "JA") {

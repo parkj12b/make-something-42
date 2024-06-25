@@ -13,7 +13,7 @@ module.exports = async function (fromLang, toLang, msg, verbose = false) {
     params: {
       auth_key: process.env.DEEPLKEY,
 //      source_lang: fromLang,
-      target_lang: "EN",
+      target_lang: toLang,
       text: msg,
     },
   });
