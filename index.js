@@ -86,7 +86,7 @@ function handleCommand(command, channel, client) {
 
 app.message(async ({ message, client, say }) => {
 
-  if (message.text.startsWith('!T42 ')) {
+  if (message.text != undefined && message.text.startsWith('!t42cmd ')) {
     const command = message.text.split(' ')[1];
     const response = handleCommand(command, message.channel, client);
     await say(response);
@@ -96,7 +96,7 @@ app.message(async ({ message, client, say }) => {
   if (channelState === 'paused') {
     return;
   }
-  if (channelState === 'manual' && !message.text.startsWith('!T42 ')) {
+  if (channelState === 'manual' && !message.text.startsWith('!t42 ')) {
     return;
   }
 
@@ -181,8 +181,9 @@ app.message(async ({ message, client, say }) => {
     // }
 
     var splitLocale = fromUser.user.locale.split("-");
-    var toLang = fromUser.user.locale[0].toUpperCase();
-    var fromLanguage = "no meaning for now";
+    var toLang = splitLocale[0].toUpperCase();
+    console.log("here\n" + toLang);
+    var fromLanguage = "no meaning for now"
     // translate message:
     // if (fromLanguage === "JA") {
     //   var toLang = "EN";
@@ -257,13 +258,30 @@ app.shortcut('1', async ({ shortcut, ack, client }) => {
 
     // Original message from the shortcut payload
     const originalMessage = shortcut.message.text;
+    
+    try {
+      // Call the users.info method using the WebClient
+      // console.log("get sender information:");
+      var fromUser = await client.users.info({
+        user: message.user,
+        include_locale: true
+      });
+      // console.log(`is this user info? ${fromUser.user.locale}`);
+      var fromName = fromUser.user.display_name;
+    } catch (error) {
+      console.error(error);
+      var fromName = "Unidentified User";
+    }
 
+    var splitLocale = fromUser.user.locale.split("-");
+    var toLang = fromUser.user.locale[0].toUpperCase();
     // Translate the original message to the desired language
     var resp = await translate(
       (fromLang = fromLanguage),
       (toLang = toLang),
       (msg = originalMessage)
     );
+
 
     // Send the translated message back to the user in Slack
     await client.chat.postMessage({
