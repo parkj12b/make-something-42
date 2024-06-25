@@ -320,7 +320,7 @@ async function performTranslation(text, userId, client) {
     toLang = "EN";  // Default to English in case of error
   }
 
-  var fromLanguage = "AUTO";
+  fromLanguage = "AUTO";
 
   // Translate
   try {
