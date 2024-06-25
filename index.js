@@ -2,7 +2,7 @@
 
 require("dotenv").config("./.env");
 const translate = require("./translate.js");
-const detectLang = require("./detectLang.js");
+// const detectLang = require("./detectLang.js");
 const { App } = require("@slack/bolt");
 
 var fromToTable = [
@@ -80,6 +80,7 @@ app.message(async ({ message, client }) => {
       var fromUser = await client.users.info({
         user: message.user,
       });
+      console.log(`is this user info? ${JSON.stringify(fromUser)}`);
       var fromName = fromUser.user.display_name;
     } catch (error) {
       console.error(error);
@@ -99,14 +100,15 @@ app.message(async ({ message, client }) => {
       var fromLanguage = "language detection error";
     }
 
+    var toLang = "no meaning here";
     // translate message:
-    if (fromLanguage === "JA") {
-      var toLang = "EN";
-      var postmsg = ` ---- DeepL API translation, from Japanese to English ----\n`;
-    } else {
-      var toLang = "JA";
-      var postmsg = ` ---- DeepL API translation, from English to Japanese ----\n`;
-    }
+    // if (fromLanguage === "JA") {
+    //   var toLang = "EN";
+    //   var postmsg = ` ---- DeepL API translation, from Japanese to English ----\n`;
+    // } else {
+    //   var toLang = "JA";
+    //   var postmsg = ` ---- DeepL API translation, from English to Japanese ----\n`;
+    // }
 
     try {
       // console.log("translate message");
