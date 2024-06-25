@@ -23,9 +23,9 @@ const app = new App({
 let channelStates = {};
 
 // ************************************************************
-// this one handles /t24 start / pause / manual message commands 
+// this one handles /t42 start / pause / manual message commands 
 // left behind just in case
-// /t24 magic text     -> will translate text
+// /t42 magic text     -> will translate text
 // ************************************************************
 
 app.command('/t42', async ({ command, ack, respond, client }) => {
