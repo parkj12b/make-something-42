@@ -137,7 +137,8 @@ app.message(async ({ message, client, say }) => {
     //   var fromLanguage = "language detection error";
     // }
 
-    var toLang = fromUser.user.locale;
+    var splitLocale = fromUser.user.locale.split("-");
+    var toLang = fromUser.user.locale[0].toUpperCase();
     var fromLanguage = "no meaning for now"
     // translate message:
     // if (fromLanguage === "JA") {
