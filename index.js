@@ -20,7 +20,43 @@ const app = new App({
   console.log("⚡️ Bolt app started");
 })();
 
-app.message(async ({ message, client }) => {
+let channelStates = {};
+
+function handleCommand(command, channel, client) {
+  switch (command) {
+    case 'start':
+      // Start translating all messages
+      channelStates[channel] = 'translate_all';
+      return "Translation started for all messages in this channel.";
+    case 'pause':
+      // Pause translation
+      channelStates[channel] = 'paused';
+      return "Translation paused for this channel.";
+    case 'manual':
+      // Only translate messages forwarded to the bot
+      channelStates[channel] = 'manual';
+      return "Now only translating messages forwarded to the bot.";
+    default:
+      return "Unknown command. Available commands: start, pause, manual";
+  }
+}
+
+app.message(async ({ message, client, say }) => {
+
+  if (message.text.startsWith('!T42cmd ')) {
+    const command = message.text.split(' ')[1];
+    const response = handleCommand(command, message.channel, client);
+    await say(response);
+    return;
+  }
+  const channelState = channelStates[message.channel] || 'manual';
+  if (channelState === 'paused') {
+    return;
+  }
+  if (channelState === 'manual' && !message.text.startsWith('!T42 ')) {
+    return;
+  }
+
   console.log(`Message received`);
   var msgKeys = Object.keys(message);
 
@@ -112,12 +148,16 @@ app.message(async ({ message, client }) => {
     //   var postmsg = ` ---- DeepL API translation, from English to Japanese ----\n`;
     // }
 
+    const textToTranslate = message.text.startsWith('!T42 ')
+    ? message.text.slice('!T42 '.length)
+    : message.text;
+
     try {
       // console.log("translate message");
       var resp = await translate(
         (fromLang = fromLanguage),
         (toLang = toLang),
-        (msg = message.text)
+        (msg = textToTranslate)
       );
       console.log(`translation is:\n ${JSON.stringify(resp)}`);
     } catch (error) {
@@ -135,14 +175,24 @@ app.message(async ({ message, client }) => {
       postmsg = postmsg.concat(`> --- attachement not translated sorry ---`);
     }
 
-    let result = await client.chat.postMessage({
-      text: postmsg,
-      channel: chanOfInterest.toId,
-      // as_user: false,
-      username: `AutoTranslate: ${fromUser.user.profile.display_name}`,
-      icon_url: fromUser.user.profile.image_48,
-    });
-
+    if (channelState === 'translate_all') {
+      // Post to the auto-translate channe
+      await client.chat.postMessage({
+        text: postmsg,
+        channel: chanOfInterest.toId,
+        username: `AutoTranslate: ${fromUser.user.profile.display_name}`,
+        icon_url: fromUser.user.profile.image_48,
+      });
+    } else if (channelState === 'manual') {
+      // Post the translation as a thread reply in the same channel
+      await client.chat.postMessage({
+        text: postmsg,
+        channel: message.channel,
+        thread_ts: message.ts,
+        username: `AutoTranslate`,
+        icon_url: fromUser.user.profile.image_48,
+      });
+    }
     // await say(resp.transMsg);
   } else {
     console.log("Not tracked channel, or skipped");
