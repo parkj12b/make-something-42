@@ -188,28 +188,12 @@ app.message(async ({ message, client, say }) => {
       });
       // console.log(`is this user info? ${fromUser.user.locale}`);
       var fromName = fromUser.user.profile.display_name;
-      console.log(fromName);
+      console.log("here\n" + fromName);
     } catch (error) {
       console.error(error);
       var fromName = "Unidentified User";
     }
 
-    // set to either channel language or workspace language
-    try {
-      // Call the team.info API method to fetch team information
-      const result = await app.client.team.info({
-        token: process.env.SLACK_BOT_TOKEN // Use your actual bot token here
-      });
-  
-      if (result.ok) {
-        const defaultLanguage = result.team.prefs.default_language;
-        console.log(`Default language of the workspace: ${defaultLanguage}`);
-      } else {
-        console.error('Error fetching team info:', result.error);
-      }
-    } catch (error) {
-      console.error('Error fetching team info:', error);
-    }
     var toLang = dataStore["toLang"];
 
     var fromLanguage = "no meaning for now"
