@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 
+const dataStore = {};
+
+dataStore["toLang"] = "EN";
+
 require("dotenv").config("./.env");
 const translate = require("./translate.js");
 // const detectLang = require("./detectLang.js");
@@ -167,30 +171,25 @@ app.message(async ({ message, client, say }) => {
       var fromName = "Unidentified User";
     }
 
-    // Detect language:
-    // try {
-    //   // console.log("translate message");
-    //   var fromLanguage = detectLang(
-    //     (text = message.text),
-    //     (japPropThresh = 0.1),
-    //     (verbose = true)
-    //   );
-    // } catch (error) {
-    //   console.error(error);
-    //   var fromLanguage = "language detection error";
-    // }
-
-    var toLang = "EN";
+    // set to either channel language or workspace language
+    try {
+      // Call the team.info API method to fetch team information
+      const result = await app.client.team.info({
+        token: process.env.SLACK_BOT_TOKEN // Use your actual bot token here
+      });
+  
+      if (result.ok) {
+        const defaultLanguage = result.team.prefs.default_language;
+        console.log(`Default language of the workspace: ${defaultLanguage}`);
+      } else {
+        console.error('Error fetching team info:', result.error);
+      }
+    } catch (error) {
+      console.error('Error fetching team info:', error);
+    }
+    var toLang = dataStore["toLang"];
 
     var fromLanguage = "no meaning for now"
-    // translate message:
-    // if (fromLanguage === "JA") {
-    //   var toLang = "EN";
-    //   var postmsg = ` ---- DeepL API translation, from Japanese to English ----\n`;
-    // } else {
-    //   var toLang = "JA";
-    //   var postmsg = ` ---- DeepL API translation, from English to Japanese ----\n`;
-    // }
 
     const textToTranslate = message.text.startsWith('!t42 ')
     ? message.text.slice('!t42 '.length)
