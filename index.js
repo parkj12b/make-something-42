@@ -187,7 +187,7 @@ app.message(async ({ message, client, say }) => {
         include_locale: true
       });
       // console.log(`is this user info? ${fromUser.user.locale}`);
-      var fromName = fromUser.user.display_name;
+      var fromName = fromUser.user.profile.display_name;
     } catch (error) {
       console.error(error);
       var fromName = "Unidentified User";
