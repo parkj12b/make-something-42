@@ -1,6 +1,11 @@
 #!/usr/bin/env node
 
 const dataStore = {};
+const languageCodes = [
+  "AR", "BG", "CS", "DA", "DE", "EL", "EN", "EN-GB", "EN-US", "ES", "ET", "FI", 
+  "FR", "HU", "ID", "IT", "JA", "KO", "LT", "LV", "NB", "NL", "PL", "PT", "PT-BR", 
+  "PT-PT", "RO", "RU", "SK", "SL", "SV", "TR", "UK", "ZH"
+];
 
 dataStore["toLang"] = "EN";
 
@@ -65,8 +70,25 @@ app.command('/t42', async ({ command, ack, respond, client }) => {
   }
 });
 
+app.command('/t42_language', async ({ command, ack, respond, client }) => {
+
+  await ack();
+
+  const { text, channel_id, user_id } = command;
+
+  const [subCommand, ...rest] = text.split(' ');
+
+  if(languageCodes.includes(subCommand))
+  {
+    dataStore["toLang"] = subCommand;
+    await respond(`Language set to ${subCommand}`);
+  }
+});
+
+
+
 // ************************************************************
-// this one handles !T24 start / pause / manual message commands 
+// this one handles !T42 start / pause / manual message commands 
 // left behind just in case
 // ************************************************************
 function handleCommand(command, channel, client) {
