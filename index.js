@@ -85,6 +85,16 @@ app.command('/t42_language', async ({ command, ack, respond, client }) => {
   }
 });
 
+app.command('/t42_language_help', async ({ command, ack, respond, client }) => {
+
+  await ack();
+
+  const { text, channel_id, user_id } = command;
+
+  await respond(`Check supported language in the following link: \
+      https://developers.deepl.com/docs/resources/supported-languages`);
+});
+
 
 
 // ************************************************************
