@@ -233,6 +233,7 @@ app.message(async ({ message, client, say }) => {
     var postmsg = "";
 
     // post message:
+    postmsg = postmsg.concat(`> ${fromName} said:\n`);
     postmsg = postmsg.concat(`${resp.transMsg}`);
 
     // detect attatchment:
@@ -241,7 +242,9 @@ app.message(async ({ message, client, say }) => {
     }
 	
     if (postmsg == "")
-	  postmsg = "no translation available";
+    {
+	    postmsg = "no translation available";
+    }
     if (channelState === 'translate_all') {
       // Post to the auto-translate channe
       await client.chat.postMessage({
